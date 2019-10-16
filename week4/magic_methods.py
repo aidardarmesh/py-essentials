@@ -10,8 +10,17 @@ class File:
         with open(self.file_path, 'w') as f:
             f.write(data)
     
+    def read(self):
+        with open(self.file_path) as f:
+            return f.read()
+    
     def __add__(self, obj):
+        new_file_path = tempfile.gettempdir() + os.path.join(self.file_path, obj.file_path)
+        print(new_file_path)
+        new_obj = cls(new_file_path)
+        new_obj.write(self.read() + obj.read())
         
+        return new_obj
 
     def __str__(self):
         return self.file_path
@@ -31,6 +40,7 @@ class File:
 
 hello = File('hello.txt')
 world = File('world.txt')
+print(os.path.join(hello.file_path, world.file_path))
 
 hello.write('hello\nmy\nfriend\n')
 print(hello)
