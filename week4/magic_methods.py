@@ -16,7 +16,7 @@ class File:
     
     def __add__(self, obj):
         file_name = '-'.join([self.file_path, obj.file_path])
-        new_file_path = os.path.join(tempfile.gettempdir(), file_name)
+        new_file_path = os.path.join(tempfile.gettempdir(), str(hash(file_name)))
         new_obj = File(new_file_path)
         new_obj.write(self.read() + obj.read())
 
@@ -27,17 +27,3 @@ class File:
     
     def __iter__(self):
         return open(self.file_path, 'r')
-
-first = File('first')
-first.write('first\n')
-
-second = File('second')
-second.write('second\n')
-
-third = first + second
-lines = []
-
-for line in third:
-    lines.append(line)
-
-print(lines)
