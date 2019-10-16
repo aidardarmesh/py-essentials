@@ -15,9 +15,8 @@ class File:
             return f.read()
     
     def __add__(self, obj):
-        dir = tempfile.gettempdir()
         file_name = '-'.join([self.file_path, obj.file_path])
-        new_file_path = '/'.join([dir, file_name])
+        new_file_path = os.path.join(tempfile.gettempdir(), file_name)
         new_obj = File(new_file_path)
         new_obj.write(self.read() + obj.read())
 
