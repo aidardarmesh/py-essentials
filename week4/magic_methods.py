@@ -29,16 +29,6 @@ class File:
     def __iter__(self):
         return open(self.file_path, 'r')
 
-    def __next__(self):
-        line = self.readline()
-
-        if not line:
-            self.close()
-            print('I closed file')
-            raise StopIteration
-        
-        return line
-
 first = File('first')
 first.write('first\n')
 
@@ -46,13 +36,9 @@ second = File('second')
 second.write('second\n')
 
 third = first + second
+lines = []
 
-# hello.write('hello\nmy\nfriend\n')
-# print(hello)
+for line in third:
+    lines.append(line)
 
-# lines = []
-
-# for line in hello:
-#     lines.append(line)
-
-# print(lines)
+print(lines)
