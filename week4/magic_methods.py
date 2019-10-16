@@ -15,11 +15,12 @@ class File:
             return f.read()
     
     def __add__(self, obj):
-        new_file_path = tempfile.gettempdir() + os.path.join(self.file_path, obj.file_path)
-        print(new_file_path)
-        new_obj = cls(new_file_path)
+        dir = tempfile.gettempdir()
+        file_name = '-'.join([self.file_path, obj.file_path])
+        new_file_path = '/'.join([dir, file_name])
+        new_obj = File(new_file_path)
         new_obj.write(self.read() + obj.read())
-        
+
         return new_obj
 
     def __str__(self):
@@ -38,16 +39,20 @@ class File:
         
         return line
 
-hello = File('hello.txt')
-world = File('world.txt')
-print(os.path.join(hello.file_path, world.file_path))
+first = File('first')
+first.write('first\n')
 
-hello.write('hello\nmy\nfriend\n')
-print(hello)
+second = File('second')
+second.write('second\n')
 
-lines = []
+third = first + second
 
-for line in hello:
-    lines.append(line)
+# hello.write('hello\nmy\nfriend\n')
+# print(hello)
 
-print(lines)
+# lines = []
+
+# for line in hello:
+#     lines.append(line)
+
+# print(lines)
