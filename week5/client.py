@@ -18,6 +18,8 @@ class Client:
 
         with socket.create_connection((self.ip, self.port), self.timeout) as s:
             s.send('put {} {} {}\n'.format(metric, value, timestamp).encode('utf-8'))
+            answer = s.recv(1024)
+            return answer.decode('utf-8')
 
     def get(self, metric):
         answer = ''
