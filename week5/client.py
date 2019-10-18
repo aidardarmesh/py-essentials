@@ -17,13 +17,13 @@ class Client:
         timestamp = timestamp or str(int(time.time()))
 
         with socket.create_connection((self.ip, self.port), self.timeout) as s:
-            s.send("put {} {} {}\n".format(metric, value, timestamp).encode('utf-8'))
+            s.send('put {} {} {}\n'.format(metric, value, timestamp).encode('utf-8'))
 
     def get(self, metric):
         answer = ''
 
         with socket.create_connection((self.ip, self.port), self.timeout) as s:
-            s.send("get {}\n".format(metric).encode('utf-8'))
+            s.send('get {}\n'.format(metric).encode('utf-8'))
             answer = s.recv(1024)
 
         res = {}
