@@ -19,10 +19,12 @@ class ClientServerProtocol(asyncio.Protocol):
 
             if not metric in type(self).storage:
                 type(self).storage[metric] = []
+            
+            for t, v in type(self).storage[metric]:
+                if timestamp == t:
+                    return 'ok\n\n'
 
             type(self).storage[metric].append((timestamp, value))
-
-            print(type(self).storage)
 
             return 'ok\n\n'
         elif command == 'get':
