@@ -2,9 +2,10 @@ import asyncio
 
 
 class ClientServerProtocol(asyncio.Protocol):
+    storage = {}
+
     def connection_made(self, transport):
         self.transport = transport
-        self.storage = {}
     
     def process_data(self, payload):
         if len(payload.split()) < 2:
@@ -16,25 +17,25 @@ class ClientServerProtocol(asyncio.Protocol):
         if command == 'put':
             metric, value, timestamp = data.split()
 
-            if not metric in self.storage:
-                self.storage[metric] = []
+            if not metric in type(self).storage:
+                type(self).storage[metric] = []
 
-            self.storage[metric].append((timestamp, value))
+            type(self).storage[metric].append((timestamp, value))
 
-            print(self.storage)
+            print(type(self).storage)
 
             return 'ok\n\n'
         elif command == 'get':
             res = 'ok\n'
 
             if data == '*':
-                for key in self.storage:
-                    self.storage[key].sort()
+                for key in type(self).storage:
+                    type(self).storage[key].sort()
 
-                    for timestamp, value in self.storage[key]:
+                    for timestamp, value in type(self).storage[key]:
                         res += ' '.join([key, value, timestamp]) + '\n'
-            elif data in self.storage:
-                timestamp, value = self.storage[data]
+            elif data in type(self).storage:
+                timestamp, value = type(self).storage[data]
                 res += ' '.join([data, value, timestamp]) + '\n'
             
             res += '\n'
