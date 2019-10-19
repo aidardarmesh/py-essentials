@@ -24,7 +24,7 @@ class ClientServerProtocol(asyncio.Protocol):
 
             if data == '*':
                 for key in self.storage:
-                    res += ' '.join(key, self.storage[key]) + '\n'
+                    res += ' '.join([key, self.storage[key]]) + '\n'
             elif data in self.storage:
                 res += ' '.join([data, self.storage[data]]) + '\n'
             
