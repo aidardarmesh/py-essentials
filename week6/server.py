@@ -7,6 +7,9 @@ class ClientServerProtocol(asyncio.Protocol):
         self.storage = {}
     
     def process_data(self, payload):
+        if len(payload.split()) < 2:
+            return 'error\nwrong command\n\n'
+        
         command, data = payload.split(' ', 1)
         data = data.strip()
 
@@ -33,7 +36,6 @@ class ClientServerProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         resp = self.process_data(data.decode())
-        # self.process_data(data.decode())
         self.transport.write(resp.encode())
 
 
