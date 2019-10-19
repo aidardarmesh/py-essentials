@@ -37,8 +37,8 @@ class ClientServerProtocol(asyncio.Protocol):
                     for timestamp, value in type(self).storage[key]:
                         res += ' '.join([key, value, timestamp]) + '\n'
             elif data in type(self).storage:
-                timestamp, value = type(self).storage[data]
-                res += ' '.join([data, value, timestamp]) + '\n'
+                for timestamp, value in type(self).storage[data]:
+                    res += ' '.join([data, value, timestamp]) + '\n'
             
             res += '\n'
 
