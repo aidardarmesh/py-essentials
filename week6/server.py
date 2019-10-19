@@ -16,7 +16,12 @@ class ClientServerProtocol(asyncio.Protocol):
         if command == 'put':
             metric, value, timestamp = data.split()
 
-            self.storage[metric] = ' '.join([value, timestamp])
+            if not metric in self.storage:
+                self.storage[metric] = []
+
+            self.storage[metric].append((timestamp, value))
+
+            print(self.storage)
 
             return 'ok\n\n'
         elif command == 'get':
@@ -24,9 +29,13 @@ class ClientServerProtocol(asyncio.Protocol):
 
             if data == '*':
                 for key in self.storage:
-                    res += ' '.join([key, self.storage[key]]) + '\n'
+                    self.storage[key].sort()
+
+                    for timestamp, value in self.storage[key]:
+                        res += ' '.join([key, value, timestamp]) + '\n'
             elif data in self.storage:
-                res += ' '.join([data, self.storage[data]]) + '\n'
+                timestamp, value = self.storage[data]
+                res += ' '.join([data, value, timestamp]) + '\n'
             
             res += '\n'
 
